@@ -5,7 +5,7 @@ interface
 uses Windows;
 
 procedure CobaltLoadDLL();
-procedure CobaltInit(hwnd: HWND);
+procedure CobaltInit(hwnd: HWND; enableImGui: Boolean);
 procedure CobaltShutdown();
 procedure CobaltRender();
 
@@ -16,7 +16,7 @@ const
 
 var
   CobaltBindingsDLLHandle: HMODULE;
-  CobaltInitFn: procedure(hwnd: HWND); stdcall;
+  CobaltInitFn: procedure(hwnd: HWND; enableImGui: Boolean); stdcall;
   CobaltShutdownFn: procedure(); stdcall;
   CobaltRenderFn: procedure(); stdcall;
 
@@ -29,9 +29,9 @@ begin
   @CobaltRenderFn := GetProcAddress(CobaltBindingsDLLHandle, 'CobaltRender');
 end;
 
-procedure CobaltInit(hwnd: HWND);
+procedure CobaltInit(hwnd: HWND; enableImGui: Boolean);
 begin
-  CobaltInitFn(hwnd);
+  CobaltInitFn(hwnd, enableImGui);
 end;
 
 procedure CobaltShutdown();

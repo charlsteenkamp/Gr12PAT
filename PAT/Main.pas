@@ -30,7 +30,7 @@ implementation
 procedure TForm1.btnInitClick(Sender: TObject);
 begin
   var hwnd := WindowHandleToPlatform(Self.Handle).Wnd;
-  CobaltInit(hwnd);
+  CobaltInit(hwnd, True);
   Timer1.Enabled := True;
 end;
 

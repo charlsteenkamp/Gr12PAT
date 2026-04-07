@@ -6,16 +6,18 @@
 #include "AssetManager.hpp"
 #include "Vulkan/MaterialSystem.hpp"
 
+#include <imgui.h>
+
 namespace Cobalt
 {
 
 
-	RenderModule::RenderModule(GLFWwindow* window)
+	RenderModule::RenderModule()
 		: Module("RenderModule")
 	{
 		VkExtent2D extent = GraphicsContext::Get().GetSwapchain().GetExtent();
 
-		mCameraController = CameraController(window, extent.width, extent.height);
+		mCameraController = CameraController(extent.width, extent.height);
 
 		mScene.Camera.CameraTranslation = mCameraController.GetTranslation();
 		mScene.Camera.ViewProjectionMatrix = mCameraController.GetViewProjectionMatrix();
@@ -65,14 +67,13 @@ namespace Cobalt
 	{
 	}
 
-	void RenderModule::OnUpdate(float deltaTime)
+	void RenderModule::OnUpdate(GLFWwindow* window, float deltaTime)
 	{
+		mCameraController.OnUpdate(window, deltaTime);
 	}
 
 	void RenderModule::OnRender()
 	{
-		mCameraController.OnUpdate(16.0f / 1000.0f);
-
 		mScene.Camera.CameraTranslation = mCameraController.GetTranslation();
 		mScene.Camera.ViewProjectionMatrix = mCameraController.GetViewProjectionMatrix();
 
@@ -84,9 +85,44 @@ namespace Cobalt
 		Renderer::EndScene();
 	}
 
+	void RenderModule::OnUIRender()
+	{
+		ImGui::Begin("Debug");
+
+		auto& materialSystem = Renderer::GetMaterialSystem();
+
+		auto drawMaterialControls = [&](const std::string& materialName, Material* material)
+		{
+			MaterialInfo materialInfo = material->GetMaterialInfo();
+			bool changed = false;
+
+			ImGui::BeginChild(materialName.c_str(), ImVec2(ImGui::GetWindowContentRegionWidth(), 150), true);
+			ImGui::Text(materialName.c_str());
+			changed |= ImGui::ColorEdit3("Base Color", &materialInfo.PackedMaterial.BaseColorFactor.x);
+			changed |= ImGui::DragFloat("Roughness", &materialInfo.PackedMaterial.RoughnessFactor, 0.001f, 0.0f, 1.0f);
+			changed |= ImGui::DragFloat("Metallicness", &materialInfo.PackedMaterial.MetallicFactor, 0.001f, 0.0f, 1.0f);
+			ImGui::EndChild();
+
+			if (changed)
+			{
+				materialSystem.UpdateMaterial(material->GetMaterialHandle(), materialInfo);
+			}
+		};
+
+		drawMaterialControls("Cube Material", mCubeMesh->GetMaterial());
+		drawMaterialControls("Sphere Material", mSphereMesh->GetMaterial());
+
+		ImGui::End();
+	}
+
 	void RenderModule::OnMouseMove(float x, float y)
 	{
 		mCameraController.OnMouseMove(x, y);
+	}
+
+	void RenderModule::OnResize(uint32_t width, uint32_t height)
+	{
+		mCameraController.OnResize(width, height);
 	}
 
 }

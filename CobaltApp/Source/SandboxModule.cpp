@@ -16,11 +16,10 @@ namespace Cobalt
 	{
 		CO_PROFILE_FN();
 
-		GLFWwindow* window  = Application::Get()->GetWindow().GetWindow();
 		float width  = Application::Get()->GetWindow().GetWidth();
 		float height = Application::Get()->GetWindow().GetHeight();
 
-		mCameraController = CameraController(window, width, height);
+		mCameraController = CameraController(width, height);
 
 		mScene.Camera.CameraTranslation = mCameraController.GetTranslation();
 		mScene.Camera.ViewProjectionMatrix = mCameraController.GetViewProjectionMatrix();
@@ -123,7 +122,7 @@ namespace Cobalt
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		}
 
-		mCameraController.OnUpdate(deltaTime);
+		mCameraController.OnUpdate(window, deltaTime);
 	}
 
 	void SandboxModule::OnRender()
