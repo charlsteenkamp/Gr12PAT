@@ -1,0 +1,19 @@
+# Visual Studio
+
+.vs/
+**.sln
+**.vcxproj
+**.vcxproj.user
+**.vcxproj.filters
+**.pch
+
+# Binaries
+
+bin/
+bin-int/
+/PAT/Win64/
+
+# Delphi
+
+/PAT/__history/
+/PAT/__recovery/

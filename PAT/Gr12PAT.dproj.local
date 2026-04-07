@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2026/04/06 17:19:10.000.737,=C:\Dev\Delphi\Unit1.pas</Transaction>
+    <Transaction>2026/04/06 17:19:53.000.967,C:\Dev\Delphi\Gr12PAT\PAT\Main.fmx=C:\Dev\Delphi\Unit1.fmx</Transaction>
+    <Transaction>2026/04/06 17:19:53.000.967,C:\Dev\Delphi\Gr12PAT\PAT\Main.pas=C:\Dev\Delphi\Unit1.pas</Transaction>
+    <Transaction>2026/04/06 17:19:59.000.861,C:\Dev\Delphi\Gr12PAT\PAT\Gr12PAT.dproj=C:\Dev\Delphi\Project1.dproj</Transaction>
+    <Transaction>2026/04/07 13:47:45.000.842,=C:\Dev\Delphi\Gr12PAT\PAT\Unit1.pas</Transaction>
+    <Transaction>2026/04/07 13:48:00.000.758,C:\Dev\Delphi\Gr12PAT\PAT\Unit1.pas=C:\Dev\Delphi\Gr12PAT\PAT\CobaltBindings.pas</Transaction>
+  </Transactions>
+</BorlandProject>

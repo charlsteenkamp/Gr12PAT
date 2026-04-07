@@ -1,0 +1,34 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'Form1'
+  ClientHeight = 480
+  ClientWidth = 640
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  DesignerMasterStyle = 0
+  object Timer1: TTimer
+    Interval = 20
+    OnTimer = Timer1Timer
+    Left = 304
+    Top = 224
+  end
+  object btnInit: TButton
+    Position.X = 328.000000000000000000
+    Position.Y = 168.000000000000000000
+    TabOrder = 1
+    Text = 'Init'
+    TextSettings.Trimming = None
+    OnClick = btnInitClick
+    object btnRender: TButton
+      Position.X = 8.000000000000000000
+      Position.Y = 30.000000000000000000
+      TabOrder = 5
+      Text = 'Render'
+      TextSettings.Trimming = None
+      OnClick = btnRenderClick
+    end
+  end
+end
