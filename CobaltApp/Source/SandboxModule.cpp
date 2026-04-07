@@ -16,10 +16,11 @@ namespace Cobalt
 	{
 		CO_PROFILE_FN();
 
+		GLFWwindow* window  = Application::Get()->GetWindow().GetWindow();
 		float width  = Application::Get()->GetWindow().GetWidth();
 		float height = Application::Get()->GetWindow().GetHeight();
 
-		mCameraController = CameraController(width, height);
+		mCameraController = CameraController(window, width, height);
 
 		mScene.Camera.CameraTranslation = mCameraController.GetTranslation();
 		mScene.Camera.ViewProjectionMatrix = mCameraController.GetViewProjectionMatrix();

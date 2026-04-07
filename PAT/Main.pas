@@ -11,11 +11,9 @@ type
   TForm1 = class(TForm)
     Timer1: TTimer;
     btnInit: TButton;
-    btnRender: TButton;
     procedure FormCreate(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure btnInitClick(Sender: TObject);
-    procedure btnRenderClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -33,11 +31,7 @@ procedure TForm1.btnInitClick(Sender: TObject);
 begin
   var hwnd := WindowHandleToPlatform(Self.Handle).Wnd;
   CobaltInit(hwnd);
-end;
-
-procedure TForm1.btnRenderClick(Sender: TObject);
-begin
-  CobaltRender();
+  Timer1.Enabled := True;
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -50,7 +44,7 @@ end;
 
 procedure TForm1.Timer1Timer(Sender: TObject);
 begin
-  //CobaltRender();
+  CobaltRender();
 end;
 
 end.

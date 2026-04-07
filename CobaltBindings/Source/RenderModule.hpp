@@ -9,7 +9,7 @@ namespace Cobalt
 	class RenderModule : public Module
 	{
 	public:
-		RenderModule();
+		RenderModule(GLFWwindow* window);
 		~RenderModule();
 
 	public:
@@ -17,6 +17,7 @@ namespace Cobalt
 		void OnShutdown() override;
 		void OnUpdate(float deltaTime) override;
 		void OnRender() override;
+		void OnMouseMove(float x, float y) override;
 
 	private:
 		CameraController mCameraController;

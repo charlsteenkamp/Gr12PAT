@@ -29,6 +29,7 @@ using namespace Cobalt;
 
 struct Context
 {
+    std::unique_ptr<Window> mWindow;
     std::unique_ptr<GraphicsContext> mGraphicsContext;
     std::unique_ptr<RenderModule> mRenderModule;
 };
@@ -37,17 +38,20 @@ static Context* sContext = nullptr;
 
 void CobaltInit(HWND hwnd)
 {
-    std::cout << "CobaltInit()";
-
     sContext = new Context();
-    sContext->mGraphicsContext = std::make_unique<GraphicsContext>(hwnd);
+
+    sContext->mWindow = std::make_unique<Window>(hwnd);
+    sContext->mWindow->OnMouseMove([](float x, float y) { sContext->mRenderModule->OnMouseMove(x, y); });
+    sContext->mWindow->Create();
+
+    sContext->mGraphicsContext = std::make_unique<GraphicsContext>(*sContext->mWindow);
     sContext->mGraphicsContext->Init();
 
     ShaderCompiler::Init();
     AssetManager::Init();
     Renderer::Init();
 
-    sContext->mRenderModule = std::make_unique<RenderModule>();
+    sContext->mRenderModule = std::make_unique<RenderModule>(sContext->mWindow->GetWindow());
     sContext->mRenderModule->OnInit();
 
 #if 0

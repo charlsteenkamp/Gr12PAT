@@ -10,12 +10,12 @@ namespace Cobalt
 {
 
 
-	RenderModule::RenderModule()
+	RenderModule::RenderModule(GLFWwindow* window)
 		: Module("RenderModule")
 	{
 		VkExtent2D extent = GraphicsContext::Get().GetSwapchain().GetExtent();
 
-		mCameraController = CameraController(extent.width, extent.height);
+		mCameraController = CameraController(window, extent.width, extent.height);
 
 		mScene.Camera.CameraTranslation = mCameraController.GetTranslation();
 		mScene.Camera.ViewProjectionMatrix = mCameraController.GetViewProjectionMatrix();
@@ -71,7 +71,7 @@ namespace Cobalt
 
 	void RenderModule::OnRender()
 	{
-		//mCameraController.OnUpdate(16.0f / 1000.0f);
+		mCameraController.OnUpdate(16.0f / 1000.0f);
 
 		mScene.Camera.CameraTranslation = mCameraController.GetTranslation();
 		mScene.Camera.ViewProjectionMatrix = mCameraController.GetViewProjectionMatrix();
@@ -82,6 +82,11 @@ namespace Cobalt
 		Renderer::DrawMesh({ .Translation = { -2.0f, 0.0f, 0.0f } }, mCubeMesh);
 		Renderer::DrawMesh({ .Translation = {  2.0f, 0.0f, 0.0f } }, mSphereMesh);
 		Renderer::EndScene();
+	}
+
+	void RenderModule::OnMouseMove(float x, float y)
+	{
+		mCameraController.OnMouseMove(x, y);
 	}
 
 }
