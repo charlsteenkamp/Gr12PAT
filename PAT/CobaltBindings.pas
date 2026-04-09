@@ -4,44 +4,56 @@ interface
 
 uses Windows;
 
-procedure CobaltLoadDLL();
-procedure CobaltInit(hwnd: HWND; enableImGui: Boolean);
-procedure CobaltShutdown();
-procedure CobaltRender();
+type
+  TCobaltBindings = class
+  public
+    constructor Create();
+
+    procedure Init(hwnd: HWND; enableImGui: Boolean);
+    procedure Shutdown();
+    procedure Render();
+
+  private
+    procedure LoadDLL();
+
+  private
+    FLibraryHandle: HMODULE;
+    FInitFn: procedure(hwnd: HWND; enableImGui: Boolean); stdcall;
+    FShutdownFn: procedure(); stdcall;
+    FRenderFn: procedure(); stdcall;
+
+    const DLL_PATH = 'CobaltBindings.dll';
+  end;
 
 implementation
 
-const
-  COBALT_BINDINGS_DLL = 'CobaltBindings.dll';
-
-var
-  CobaltBindingsDLLHandle: HMODULE;
-  CobaltInitFn: procedure(hwnd: HWND; enableImGui: Boolean); stdcall;
-  CobaltShutdownFn: procedure(); stdcall;
-  CobaltRenderFn: procedure(); stdcall;
-
-procedure CobaltLoadDLL();
+constructor TCobaltBindings.Create();
 begin
-  CobaltBindingsDLLHandle := LoadLibrary('CobaltBindings.dll');
-
-  @CobaltInitFn := GetProcAddress(CobaltBindingsDLLHandle, 'CobaltInit');
-  @CobaltShutdownFn := GetProcAddress(CobaltBindingsDLLHandle, 'CobaltShutdown');
-  @CobaltRenderFn := GetProcAddress(CobaltBindingsDLLHandle, 'CobaltRender');
+  LoadDLL();
 end;
 
-procedure CobaltInit(hwnd: HWND; enableImGui: Boolean);
+procedure TCobaltBindings.Init(hwnd: HWND; enableImGui: Boolean);
 begin
-  CobaltInitFn(hwnd, enableImGui);
+  FInitFn(hwnd, enableImGui);
 end;
 
-procedure CobaltShutdown();
+procedure TCobaltBindings.Shutdown();
 begin
-  CobaltShutdownFn();
+  FShutdownFn();
 end;
 
-procedure CobaltRender();
+procedure TCobaltBindings.Render();
 begin
-  CobaltRenderFn();
+  FRenderFn();
+end;
+
+procedure TCobaltBindings.LoadDLL();
+begin
+  FLibraryHandle := LoadLibrary('CobaltBindings.dll');
+
+  @FInitFn := GetProcAddress(FLibraryHandle, 'CobaltInit');
+  @FShutdownFn := GetProcAddress(FLibraryHandle, 'CobaltShutdown');
+  @FRenderFn := GetProcAddress(FLibraryHandle, 'CobaltRender');
 end;
 
 end.
