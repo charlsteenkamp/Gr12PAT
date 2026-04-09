@@ -1,0 +1,16 @@
+inherited ContentBrowserPanelFrame: TContentBrowserPanelFrame
+  Size.Width = 196.000000000000000000
+  inherited layoutHeading: TLayout
+    Size.Width = 196.000000000000000000
+    inherited lblHeading: TLabel
+      TextSettings.Font.StyleExt = {00070000000000000004000000}
+      Text = 'Content Browser'
+    end
+    inherited btnClose: TButton
+      Position.X = 156.000000000000000000
+    end
+  end
+  inherited layoutContents: TLayout
+    Size.Width = 196.000000000000000000
+  end
+end

@@ -1,0 +1,138 @@
+object ProjectForm: TProjectForm
+  Left = 0
+  Top = 0
+  Caption = 'Form1'
+  ClientHeight = 480
+  ClientWidth = 640
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  DesignerMasterStyle = 0
+  object FTabSelector: TTabControl
+    Align = Client
+    Size.Width = 640.000000000000000000
+    Size.Height = 456.000000000000000000
+    Size.PlatformDefault = False
+    TabIndex = 0
+    TabOrder = 2
+    TabPosition = PlatformDefault
+    OnChange = FTabSelectorChange
+    Sizes = (
+      640s
+      430s
+      640s
+      430s
+      640s
+      430s)
+    object tiDesign: TTabItem
+      CustomIcon = <
+        item
+        end>
+      TextSettings.Trimming = None
+      IsSelected = True
+      Size.Width = 57.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Design'
+      ExplicitSize.cx = 57.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+    end
+    object tiMaterials: TTabItem
+      CustomIcon = <
+        item
+        end>
+      TextSettings.Trimming = None
+      IsSelected = False
+      Size.Width = 69.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Materials'
+      ExplicitSize.cx = 69.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+    end
+    object tiSpecifications: TTabItem
+      CustomIcon = <
+        item
+        end>
+      TextSettings.Trimming = None
+      IsSelected = False
+      Size.Width = 93.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Specifications'
+      ExplicitSize.cx = 93.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+    end
+  end
+  object FMenuBar: TMenuBar
+    Size.Width = 640.000000000000000000
+    Size.Height = 24.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 3
+    object miFile: TMenuItem
+      Text = 'File'
+      object miFileOpenProject: TMenuItem
+        Locked = True
+        Text = 'Open Project'
+      end
+      object miFileOpenRecent: TMenuItem
+        Locked = True
+        Text = 'Open Recent'
+      end
+      object miFileSaveProject: TMenuItem
+        Locked = True
+        Text = 'Save Project'
+      end
+      object miFileExit: TMenuItem
+        Locked = True
+        Text = 'Exit'
+      end
+    end
+    object miEdit: TMenuItem
+      Text = 'Edit'
+      object miEditPreferences: TMenuItem
+        Locked = True
+        Text = 'Preferences...'
+      end
+    end
+    object miView: TMenuItem
+      Text = 'View'
+      object miViewPanels: TMenuItem
+        Locked = True
+        Text = 'Panels'
+        object miViewPropertiesPanel: TMenuItem
+          Locked = True
+          IsChecked = True
+          Text = 'Properties'
+          OnClick = miViewPropertiesPanelClick
+        end
+        object miViewContentBrowserPanel: TMenuItem
+          Locked = True
+          IsChecked = True
+          Text = 'Content Browser'
+          OnClick = miViewContentBrowserPanelClick
+        end
+        object miViewMeshViewPanel: TMenuItem
+          Locked = True
+          IsChecked = True
+          Text = 'Mesh View'
+          OnClick = miViewMeshViewPanelClick
+        end
+      end
+    end
+    object miHelp: TMenuItem
+      Text = 'Help'
+      object miHelpAbout: TMenuItem
+        Locked = True
+        Text = 'About'
+      end
+    end
+  end
+end

@@ -1,0 +1,8 @@
+inherited PropertiesPanelFrame: TPropertiesPanelFrame
+  inherited layoutHeading: TLayout
+    inherited lblHeading: TLabel
+      TextSettings.Font.StyleExt = {00070000000000000004000000}
+      Text = 'Properties'
+    end
+  end
+end

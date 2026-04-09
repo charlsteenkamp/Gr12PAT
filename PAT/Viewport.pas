@@ -10,11 +10,13 @@ type
   TViewport = class
   public
     constructor Create(AOwner: TForm; AParent: TControl; ACobaltBindings: TCobaltBindings);
-    procedure Resize();
 
   private
     function CreateChildWindow(): HWND;
+    procedure Resize();
+
     procedure OnTimer(Sender: TObject);
+    procedure OnResize(Sender: TObject);
 
   private
     FOwner: TForm;
@@ -43,9 +45,11 @@ begin
   FTimer.Interval := 15;
   FTimer.Enabled := True;
   FTimer.OnTimer := Self.OnTimer;
+
+  FParent.OnResize := Self.OnResize;
 end;
 
-procedure TViewport.Resize;
+procedure TViewport.Resize();
 begin
   var Position := FParent.LocalToAbsolute(TPointF.Zero);
   var Scale := FOwner.Canvas.Scale;
@@ -71,13 +75,16 @@ begin
     WindowHandleToPlatform(FOwner.Handle).Wnd,
     0, GetModuleHandle(nil), nil
   );
-
-  EnableWindow(FWindowHandle, True);
 end;
 
 procedure TViewport.OnTimer(Sender: TObject);
 begin
   FCobaltBindings.Render();
+end;
+
+procedure TViewport.OnResize(Sender: TObject);
+begin
+  Self.Resize();
 end;
 
 end.

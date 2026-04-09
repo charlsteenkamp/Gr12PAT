@@ -1,0 +1,54 @@
+object DesignPanelFrame: TDesignPanelFrame
+  Align = Client
+  Size.Width = 320.000000000000000000
+  Size.Height = 240.000000000000000000
+  Size.PlatformDefault = False
+  object layoutHeading: TLayout
+    Align = Top
+    Padding.Left = 10.000000000000000000
+    Padding.Top = 10.000000000000000000
+    Padding.Right = 10.000000000000000000
+    Padding.Bottom = 10.000000000000000000
+    Size.Width = 320.000000000000000000
+    Size.Height = 50.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object lblHeading: TLabel
+      Align = Left
+      StyledSettings = [Family, FontColor]
+      Position.X = 10.000000000000000000
+      Position.Y = 10.000000000000000000
+      Size.Width = 217.000000000000000000
+      Size.Height = 30.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.Size = 16.000000000000000000
+      TextSettings.Font.StyleExt = {00070000000000000004000000}
+      Text = 'lblHeading'
+      TabOrder = 0
+    end
+    object btnCollapse: TSpeedButton
+      Align = Right
+      StyledSettings = [Family, Style, FontColor]
+      Position.X = 280.000000000000000000
+      Position.Y = 10.000000000000000000
+      Size.Width = 30.000000000000000000
+      Size.Height = 30.000000000000000000
+      Size.PlatformDefault = False
+      Text = #10005
+      TextSettings.Font.Size = 16.000000000000000000
+      TextSettings.Trimming = None
+      OnClick = btnCollapseClick
+    end
+  end
+  object layoutContents: TLayout
+    Align = Client
+    Padding.Left = 10.000000000000000000
+    Padding.Top = 10.000000000000000000
+    Padding.Right = 10.000000000000000000
+    Padding.Bottom = 10.000000000000000000
+    Size.Width = 320.000000000000000000
+    Size.Height = 190.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+  end
+end

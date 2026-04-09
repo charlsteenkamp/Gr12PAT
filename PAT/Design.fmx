@@ -1,0 +1,73 @@
+object DesignFrame: TDesignFrame
+  Align = Client
+  Size.Width = 630.000000000000000000
+  Size.Height = 464.000000000000000000
+  Size.PlatformDefault = False
+  object pnlProperties: TPanel
+    Align = Left
+    Size.Width = 120.000000000000000000
+    Size.Height = 464.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+  end
+  object pnlMeshView: TPanel
+    Align = Right
+    Position.X = 510.000000000000000000
+    Size.Width = 120.000000000000000000
+    Size.Height = 464.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+  end
+  object layoutCenter: TLayout
+    Align = Client
+    Size.Width = 382.000000000000000000
+    Size.Height = 464.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+    object pnlViewport: TPanel
+      Align = Client
+      Size.Width = 382.000000000000000000
+      Size.Height = 324.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+    end
+    object pnlContentBrowser: TPanel
+      Align = Bottom
+      Position.Y = 328.000000000000000000
+      Size.Width = 382.000000000000000000
+      Size.Height = 136.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+    end
+    object splitCenter: TSplitter
+      Align = Bottom
+      Cursor = crVSplit
+      MinSize = 20.000000000000000000
+      Opacity = 0.000000000000000000
+      Position.Y = 324.000000000000000000
+      Size.Width = 382.000000000000000000
+      Size.Height = 4.000000000000000000
+      Size.PlatformDefault = False
+    end
+  end
+  object splitLeft: TSplitter
+    Align = Left
+    Cursor = crHSplit
+    MinSize = 20.000000000000000000
+    Opacity = 0.000000000000000000
+    Position.X = 120.000000000000000000
+    Size.Width = 4.000000000000000000
+    Size.Height = 464.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object splitRight: TSplitter
+    Align = Right
+    Cursor = crHSplit
+    MinSize = 20.000000000000000000
+    Opacity = 0.000000000000000000
+    Position.X = 506.000000000000000000
+    Size.Width = 4.000000000000000000
+    Size.Height = 464.000000000000000000
+    Size.PlatformDefault = False
+  end
+end
