@@ -674,18 +674,20 @@ inherited ContentBrowserPanelFrame: TContentBrowserPanelFrame
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = MostRight
           TabOrder = 3
-          Position.X = 533.000000000000000000
+          Position.X = 480.000000000000000000
           Margins.Left = 5.000000000000000000
-          Size.Width = 128.000000000000000000
+          Size.Width = 181.000000000000000000
           Size.Height = 25.000000000000000000
           Size.PlatformDefault = False
           TextPrompt = 'Search...'
+          OnChange = edtFindChange
+          OnChangeTracking = edtFindChange
           object btnFind: TSpeedButton
             Align = Right
             Margins.Top = 2.500000000000000000
             Margins.Right = 2.500000000000000000
             Margins.Bottom = 2.500000000000000000
-            Position.X = 105.500000000000000000
+            Position.X = 158.500000000000000000
             Position.Y = 2.500000000000000000
             Size.Width = 20.000000000000000000
             Size.Height = 20.000000000000000000
@@ -1087,7 +1089,7 @@ inherited ContentBrowserPanelFrame: TContentBrowserPanelFrame
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Client
           TabOrder = 4
-          Size.Width = 453.000000000000000000
+          Size.Width = 400.000000000000000000
           Size.Height = 25.000000000000000000
           Size.PlatformDefault = False
           OnChange = edtDirectoryChange

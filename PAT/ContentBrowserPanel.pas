@@ -39,6 +39,7 @@ type
     procedure edtDirectoryChange(Sender: TObject);
     procedure btnBackClick(Sender: TObject);
     procedure btnForwardClick(Sender: TObject);
+    procedure edtFindChange(Sender: TObject);
 
   public
     constructor Create(AOwner: TComponent; AAssetsDirectory: String);
@@ -154,26 +155,38 @@ begin
   var iRow := 0;
   var Spacing := FScale * FSpacing;
 
+  var iPrevIndex := -1;
+
   FAssetTiles[0].Position.Point := PointF(sbAssetTiles.Padding.Left, sbAssetTiles.Padding.Top);
   FAssetTiles[0].Scale.Point := PointF(FScale, FScale);
 
   for var i := 1 to High(FAssetTiles) do
   begin
+    if not FAssetTiles[i].Visible then
+      continue;
+
     FAssetTiles[i].Scale.Point := PointF(FScale, FScale);
 
-    var PrevLeft := FAssetTiles[i - 1].Position.X;
-    var PrevRight := PrevLeft + FAssetTiles[i - 1].AbsoluteWidth;
-
-    if (PrevRight + FAssetTiles[i].AbsoluteWidth - sbAssetTiles.Padding.Left) > sbAssetTiles.Width then
+    if iPrevIndex >= 0 then
     begin
-      inc(iRow);
-      FAssetTiles[i].Position.X := sbAssetTiles.Padding.Left;
+      var PrevLeft := FAssetTiles[iPrevIndex].Position.X;
+      var PrevRight := PrevLeft + FAssetTiles[iPrevIndex].AbsoluteWidth;
+
+      if (PrevRight + FAssetTiles[i].AbsoluteWidth - sbAssetTiles.Padding.Left) > sbAssetTiles.Width then
+      begin
+        inc(iRow);
+        FAssetTiles[i].Position.X := sbAssetTiles.Padding.Left;
+      end else
+      begin
+        FAssetTiles[i].Position.X := PrevRight + Spacing;
+      end;
     end else
     begin
-      FAssetTiles[i].Position.X := PrevRight + Spacing;
+      FAssetTiles[i].Position.X := sbAssetTiles.Padding.Left;
     end;
 
     FAssetTiles[i].Position.Y := sbAssetTiles.Padding.Top + iRow * (FAssetTiles[i].AbsoluteHeight + Spacing);
+    iPrevIndex := i;
   end;
 end;
 
@@ -225,6 +238,18 @@ begin
     ParseDirectory(edtDirectory.Text);
     AlignAssetTiles();
   end;
+end;
+
+procedure TContentBrowserPanelFrame.edtFindChange(Sender: TObject);
+begin
+  inherited;
+
+  for var AssetTile in FAssetTiles do
+  begin
+    AssetTile.Visible := AssetTile.Path.Contains(edtFind.Text) or edtFind.Text.IsEmpty;
+  end;
+
+  AlignAssetTiles();
 end;
 
 end.
