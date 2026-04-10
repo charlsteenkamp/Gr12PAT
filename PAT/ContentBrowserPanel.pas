@@ -3,31 +3,21 @@ unit ContentBrowserPanel;
 interface
 
 uses
-  DesignPanel,
+  DesignPanel, ContentBrowserAssetTile,
   System.Generics.Collections, System.IOUtils,
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
-  FMX.Controls.Presentation, FMX.Layouts, FMX.Objects;
+  FMX.Controls.Presentation, FMX.Layouts, FMX.Objects, FMX.Edit, FMX.EditBox,
+  FMX.NumberBox;
 
 type
-  TContentBrowserAssetTile = class(TPanel)
-  public
-    constructor Create(AOwner: TComponent; APath: String);
-
-  private
-    FPath: String;
-    FFileNameLabel: TLabel;
-    FThumbnail: TImage;
-    FSpacing: Single;
-
-  public
-    property Spacing: Single read FSpacing write FSpacing;
-  end;
-
   TContentBrowserPanelFrame = class(TDesignPanelFrame)
     sbAssetTiles: TVertScrollBox;
     pnlAssetTiles: TPanel;
+    Layout1: TLayout;
+    nbScale: TNumberBox;
     procedure sbAssetTilesResize(Sender: TObject);
+    procedure nbScaleChange(Sender: TObject);
 
   public
     constructor Create(AOwner: TComponent);
@@ -36,43 +26,13 @@ type
     procedure AlignAssetTiles();
 
   private
-    FAssetTiles: TArray<TContentBrowserAssetTile>;
-    FScale: Single;
+    FAssetTiles: TArray<TContentBrowserAssetTileFrame>;
+    FScale, FSpacing: Single;
   end;
 
 implementation
 
 {$R *.fmx}
-
-{ TContentBrowserAssetTile }
-
-constructor TContentBrowserAssetTile.Create(AOwner: TComponent; APath: String);
-begin
-  inherited Create(AOwner);
-
-  Self.Width := 50.0;
-  Self.Height := 65.0;
-  Self.Padding.Left := 10.0;
-  Self.Padding.Top := 10.0;
-  Self.Padding.Right := 10.0;
-  Self.Padding.Bottom := 10.0;
-
-  FSpacing := 5.0;
-  FPath := APath;
-
-  FThumbnail := TImage.Create(Self);
-  FThumbnail.Bitmap.Clear(TAlphaColors.Black);
-  FThumbnail.Parent := Self;
-  FThumbnail.Align := TAlignLayout.Top;
-  //FThumbnail.Width :=
-  FThumbnail.Height := 60.0;
-
-  FFileNameLabel := TLabel.Create(Self);
-  FFileNameLabel.Parent := Self;
-  FFileNameLabel.Align := TAlignLayout.Top;
-  FFileNameLabel.TextSettings.HorzAlign := TTextAlign.Center;
-  FFileNameLabel.Text := System.IOUtils.TPath.GetFileName(APath);
-end;
 
 { TContentBrowserPanelFrame }
 
@@ -81,51 +41,66 @@ begin
   inherited Create(AOwner, 200);
 
   FScale := 1.0;
+  FSpacing := 5.0;
+
+  nbScale.Value := FScale;
 
   SetLength(FAssetTiles, 10);
 
   for var i := 0 to 9 do
   begin
-    FAssetTiles[i] := TContentBrowserAssetTile.Create(Self, 'Filename.ext');
+    FAssetTiles[i] := TContentBrowserAssetTileFrame.Create(Self, 'Filename.ext');
+    FAssetTiles[i].Name := Format('ContentBrowserAssetTile%d', [i]);
+    FAssetTiles[i].Scale.X := FScale;
+    FAssetTiles[i].Scale.Y := FScale;
     FAssetTiles[i].Parent := sbAssetTiles;
   end;
+end;
+
+procedure TContentBrowserPanelFrame.nbScaleChange(Sender: TObject);
+begin
+  inherited;
+
+  FScale := nbScale.Value;
+  AlignAssetTiles();
 end;
 
 procedure TContentBrowserPanelFrame.sbAssetTilesResize(Sender: TObject);
 begin
   inherited;
 
-  if Length(FAssetTiles) <> 0 then
-    AlignAssetTiles();
+  AlignAssetTiles();
 end;
 
 procedure TContentBrowserPanelFrame.AlignAssetTiles();
 begin
-  var iRow := 0;
+  if Length(FAssetTiles) = 0 then
+    Exit;
 
-  FAssetTiles[0].Position.X := sbAssetTiles.Padding.Left;
-  FAssetTiles[0].Position.Y := sbAssetTiles.Padding.Top;
+  var iRow := 0;
+  var Spacing := FScale * FSpacing;
+
+  FAssetTiles[0].Position.Point := PointF(sbAssetTiles.Padding.Left, sbAssetTiles.Padding.Top);
+  FAssetTiles[0].Scale.Point := PointF(FScale, FScale);
 
   for var i := 1 to High(FAssetTiles) do
   begin
-    var PrevLeft := FAssetTiles[i - 1].Position.X;
-    var PrevRight := PrevLeft + FAssetTiles[i - 1].Width;
+    FAssetTiles[i].Scale.Point := PointF(FScale, FScale);
 
-    if (PrevRight + FAssetTiles[i].Width - sbAssetTiles.Padding.Left) > sbAssetTiles.Width then
+    var PrevLeft := FAssetTiles[i - 1].Position.X;
+    var PrevRight := PrevLeft + FAssetTiles[i - 1].AbsoluteWidth;
+
+    if (PrevRight + FAssetTiles[i].AbsoluteWidth - sbAssetTiles.Padding.Left) > sbAssetTiles.Width then
     begin
       inc(iRow);
       FAssetTiles[i].Position.X := sbAssetTiles.Padding.Left;
     end else
     begin
-      FAssetTiles[i].Position.X := PrevRight + FAssetTiles[i].Spacing;
+      FAssetTiles[i].Position.X := PrevRight + Spacing;
     end;
 
-    FAssetTiles[i].Position.Y := sbAssetTiles.Padding.Top + iRow * (FAssetTiles[i].Height + FAssetTiles[i].Spacing);
+    FAssetTiles[i].Position.Y := sbAssetTiles.Padding.Top + iRow * (FAssetTiles[i].AbsoluteHeight + Spacing);
   end;
-
-
-
-
 end;
 
 end.

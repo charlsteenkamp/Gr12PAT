@@ -31,13 +31,41 @@ inherited ContentBrowserPanelFrame: TContentBrowserPanelFrame
         Padding.Right = 5.000000000000000000
         Padding.Bottom = 5.000000000000000000
         Size.Width = 661.000000000000000000
-        Size.Height = 326.000000000000000000
+        Size.Height = 296.000000000000000000
         Size.PlatformDefault = False
         StyleLookup = 'framedscrollboxstyle'
         TabOrder = 0
         OnResize = sbAssetTilesResize
         Viewport.Width = 657.000000000000000000
-        Viewport.Height = 322.000000000000000000
+        Viewport.Height = 292.000000000000000000
+      end
+      object Layout1: TLayout
+        Align = Top
+        Padding.Left = 5.000000000000000000
+        Padding.Top = 5.000000000000000000
+        Padding.Right = 5.000000000000000000
+        Padding.Bottom = 5.000000000000000000
+        Margins.Bottom = 5.000000000000000000
+        Position.X = 7.500000000000000000
+        Position.Y = 7.500000000000000000
+        Size.Width = 661.000000000000000000
+        Size.Height = 25.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        object nbScale: TNumberBox
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = MostLeft
+          TabOrder = 0
+          Cursor = crIBeam
+          ValueType = Float
+          KeyboardType = NumbersAndPunctuation
+          Position.X = 5.000000000000000000
+          Position.Y = 5.000000000000000000
+          Size.Width = 100.000000000000000000
+          Size.Height = 15.000000000000000000
+          Size.PlatformDefault = False
+          OnChange = nbScaleChange
+        end
       end
     end
   end
