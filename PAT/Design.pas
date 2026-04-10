@@ -45,8 +45,6 @@ constructor TDesignFrame.Create(AOwner: TComponent; ACobaltBindings: TCobaltBind
 begin
   inherited Create(AOwner);
 
-  //FViewport := TViewport.Create(TForm(AOwner), pnlViewport, ACobaltBindings);
-
   FPropertiesPanel := TPropertiesPanelFrame.Create(Self);
   FPropertiesPanel.Parent := pnlProperties;
   pnlProperties.OnResize := FPropertiesPanel.OnPanelResize;
@@ -58,6 +56,17 @@ begin
   FMeshViewPanel := TMeshViewPanelFrame.Create(Self);
   FMeshViewPanel.Parent := pnlMeshView;
   pnlMeshView.OnResize := FMeshViewPanel.OnPanelResize;
+
+  Exit;
+  // Initialize renderer in the background
+
+  TThread.CreateAnonymousThread(procedure()
+  begin
+    TThread.Queue(nil, procedure
+    begin
+      FViewport := TViewport.Create(TForm(AOwner), pnlViewport, ACobaltBindings);
+    end);
+  end).Start();
 end;
 
 end.

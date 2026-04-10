@@ -1,8 +1,27 @@
 inherited MeshViewPanelFrame: TMeshViewPanelFrame
+  Size.Width = 280.000000000000000000
+  Size.Height = 224.000000000000000000
   inherited layoutHeading: TLayout
+    Size.Width = 280.000000000000000000
     inherited lblHeading: TLabel
       TextSettings.Font.StyleExt = {00070000000000000004000000}
       Text = 'Mesh View'
+    end
+    inherited btnCollapse: TSpeedButton
+      Position.X = 250.000000000000000000
+    end
+  end
+  inherited layoutContents: TLayout
+    Size.Width = 280.000000000000000000
+    Size.Height = 184.000000000000000000
+    object tvMeshTree: TTreeView
+      Align = Client
+      Size.Width = 260.000000000000000000
+      Size.Height = 164.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      Viewport.Width = 256.000000000000000000
+      Viewport.Height = 160.000000000000000000
     end
   end
 end

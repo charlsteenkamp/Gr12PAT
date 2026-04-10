@@ -1,16 +1,44 @@
 inherited ContentBrowserPanelFrame: TContentBrowserPanelFrame
-  Size.Width = 196.000000000000000000
+  Size.Width = 686.000000000000000000
+  Size.Height = 392.000000000000000000
   inherited layoutHeading: TLayout
-    Size.Width = 196.000000000000000000
+    Size.Width = 686.000000000000000000
     inherited lblHeading: TLabel
       TextSettings.Font.StyleExt = {00070000000000000004000000}
       Text = 'Content Browser'
     end
-    inherited btnClose: TButton
-      Position.X = 156.000000000000000000
+    inherited btnCollapse: TSpeedButton
+      Position.X = 656.000000000000000000
     end
   end
   inherited layoutContents: TLayout
-    Size.Width = 196.000000000000000000
+    Size.Width = 686.000000000000000000
+    Size.Height = 351.000000000000000000
+    object pnlAssetTiles: TPanel
+      Align = Client
+      Padding.Left = 7.500000000000000000
+      Padding.Top = 7.500000000000000000
+      Padding.Right = 7.500000000000000000
+      Padding.Bottom = 7.500000000000000000
+      Size.Width = 676.000000000000000000
+      Size.Height = 341.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      object sbAssetTiles: TVertScrollBox
+        Align = Client
+        Padding.Left = 5.000000000000000000
+        Padding.Top = 5.000000000000000000
+        Padding.Right = 5.000000000000000000
+        Padding.Bottom = 5.000000000000000000
+        Size.Width = 661.000000000000000000
+        Size.Height = 326.000000000000000000
+        Size.PlatformDefault = False
+        StyleLookup = 'framedscrollboxstyle'
+        TabOrder = 0
+        OnResize = sbAssetTilesResize
+        Viewport.Width = 657.000000000000000000
+        Viewport.Height = 322.000000000000000000
+      end
+    end
   end
 end

@@ -18,7 +18,7 @@ type
     procedure btnCollapseClick(Sender: TObject);
 
   public
-    constructor Create(AOwner: TComponent; AMinWidth: Single = 150.0);
+    constructor Create(AOwner: TComponent; AMinWidth: Single = 100.0);
     procedure ToggleCollapsed();
 
   public
