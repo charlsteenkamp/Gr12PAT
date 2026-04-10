@@ -8,24 +8,40 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
   FMX.Controls.Presentation, FMX.Layouts, FMX.Objects, FMX.Edit, FMX.EditBox,
-  FMX.NumberBox;
+  FMX.NumberBox, FMX.ExtCtrls;
 
 type
   TContentBrowserPanelFrame = class(TDesignPanelFrame)
     sbAssetTiles: TVertScrollBox;
     pnlAssetTiles: TPanel;
-    Layout1: TLayout;
-    nbScale: TNumberBox;
+    layoutControls: TLayout;
+    btnParentDirectory: TSpeedButton;
+    imgParentDirectory: TImage;
+    btnForward: TSpeedButton;
+    btnBack: TSpeedButton;
+    imgBack: TImage;
+    imgForward: TImage;
+    edtFind: TEdit;
+    edtDirectory: TEdit;
+    btnFind: TSpeedButton;
+    imgFind: TImage;
     procedure sbAssetTilesResize(Sender: TObject);
-    procedure nbScaleChange(Sender: TObject);
+    procedure btnParentDirectoryClick(Sender: TObject);
+    procedure edtDirectoryChange(Sender: TObject);
 
   public
-    constructor Create(AOwner: TComponent);
+    constructor Create(AOwner: TComponent; AAssetsDirectory: String);
 
   private
+    procedure ParseDirectory(ADirectory: String);
     procedure AlignAssetTiles();
 
+    procedure OnAssetTileDoubleClick(Sender: TContentBrowserAssetTileFrame);
+
   private
+    FAssetsDirectory: String;
+    FCurrentDirectory: String;
+
     FAssetTiles: TArray<TContentBrowserAssetTileFrame>;
     FScale, FSpacing: Single;
   end;
@@ -36,40 +52,58 @@ implementation
 
 { TContentBrowserPanelFrame }
 
-constructor TContentBrowserPanelFrame.Create(AOwner: TComponent);
+constructor TContentBrowserPanelFrame.Create(AOwner: TComponent; AAssetsDirectory: String);
 begin
   inherited Create(AOwner, 200);
 
+  FAssetsDirectory := AAssetsDirectory;
+
+  if TDirectory.IsRelativePath(FAssetsDirectory) then
+    FAssetsDirectory := System.IOUtils.TPath.Combine(TDirectory.GetCurrentDirectory(), FAssetsDirectory);
+
+  ParseDirectory(FAssetsDirectory);
+
   FScale := 1.0;
   FSpacing := 5.0;
+end;
 
-  nbScale.Value := FScale;
-
-  SetLength(FAssetTiles, 10);
-
-  for var i := 0 to 9 do
+procedure TContentBrowserPanelFrame.ParseDirectory(ADirectory: String);
+begin
+  for var i := 0 to High(FAssetTiles) do
   begin
-    FAssetTiles[i] := TContentBrowserAssetTileFrame.Create(Self, 'Filename.ext');
-    FAssetTiles[i].Name := Format('ContentBrowserAssetTile%d', [i]);
-    FAssetTiles[i].Scale.X := FScale;
-    FAssetTiles[i].Scale.Y := FScale;
-    FAssetTiles[i].Parent := sbAssetTiles;
+    FAssetTiles[i].Destroy();
+    FAssetTiles[i] := nil;
   end;
-end;
 
-procedure TContentBrowserPanelFrame.nbScaleChange(Sender: TObject);
-begin
-  inherited;
+  SetLength(FAssetTiles, 0);
 
-  FScale := nbScale.Value;
-  AlignAssetTiles();
-end;
+  FCurrentDirectory := ADirectory;
+  edtDirectory.Text := FCurrentDirectory;
 
-procedure TContentBrowserPanelFrame.sbAssetTilesResize(Sender: TObject);
-begin
-  inherited;
+  var Directories := TDirectory.GetDirectories(FCurrentDirectory);
+  var Files := TDirectory.GetFiles(FCurrentDirectory);
 
-  AlignAssetTiles();
+  SetLength(FAssetTiles, Length(Directories) + Length(Files));
+  var i := 0;
+
+  for var DirectoryEntry in Directories do
+  begin
+    FAssetTiles[i] := TContentBrowserAssetTileFrame.Create(Self, DirectoryEntry);
+    FAssetTiles[i].Name := Format('ContentBrowserPanelAssetTile_%d', [i]);
+    FAssetTiles[i].Parent := sbAssetTiles;
+    FAssetTiles[i].DblClickFn := Self.OnAssetTileDoubleClick;
+
+    inc(i);
+  end;
+
+  for var FileEntry in Files do
+  begin
+    FAssetTiles[i] := TContentBrowserAssetTileFrame.Create(Self, FileEntry);
+    FAssetTiles[i].Name := Format('ContentBrowserPanelAssetTile_%d', [i]);
+    FAssetTiles[i].Parent := sbAssetTiles;
+
+    inc(i);
+  end;
 end;
 
 procedure TContentBrowserPanelFrame.AlignAssetTiles();
@@ -100,6 +134,38 @@ begin
     end;
 
     FAssetTiles[i].Position.Y := sbAssetTiles.Padding.Top + iRow * (FAssetTiles[i].AbsoluteHeight + Spacing);
+  end;
+end;
+
+procedure TContentBrowserPanelFrame.OnAssetTileDoubleClick(Sender: TContentBrowserAssetTileFrame);
+begin
+  ParseDirectory(Sender.Path);
+  AlignAssetTiles();
+end;
+
+procedure TContentBrowserPanelFrame.sbAssetTilesResize(Sender: TObject);
+begin
+  inherited;
+
+  AlignAssetTiles();
+end;
+
+procedure TContentBrowserPanelFrame.btnParentDirectoryClick(Sender: TObject);
+begin
+  inherited;
+
+  ParseDirectory(TDirectory.GetParent(FCurrentDirectory));
+  AlignAssetTiles();
+end;
+
+procedure TContentBrowserPanelFrame.edtDirectoryChange(Sender: TObject);
+begin
+  inherited;
+
+  if (TDirectory.Exists(edtDirectory.Text)) and (edtDirectory.Text <> FCurrentDirectory) then
+  begin
+    ParseDirectory(edtDirectory.Text);
+    AlignAssetTiles();
   end;
 end;
 

@@ -49,7 +49,7 @@ begin
   FPropertiesPanel.Parent := pnlProperties;
   pnlProperties.OnResize := FPropertiesPanel.OnPanelResize;
 
-  FContentBrowserPanel := TContentBrowserPanelFrame.Create(Self);
+  FContentBrowserPanel := TContentBrowserPanelFrame.Create(Self, 'Assets');
   FContentBrowserPanel.Parent := pnlContentBrowser;
   pnlContentBrowser.OnResize := FContentBrowserPanel.OnPanelResize;
 

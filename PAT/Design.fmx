@@ -27,15 +27,15 @@ object DesignFrame: TDesignFrame
     object pnlViewport: TPanel
       Align = Client
       Size.Width = 382.000000000000000000
-      Size.Height = 324.000000000000000000
+      Size.Height = 284.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
     end
     object pnlContentBrowser: TPanel
       Align = Bottom
-      Position.Y = 328.000000000000000000
+      Position.Y = 288.000000000000000000
       Size.Width = 382.000000000000000000
-      Size.Height = 136.000000000000000000
+      Size.Height = 176.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 1
     end
@@ -44,7 +44,7 @@ object DesignFrame: TDesignFrame
       Cursor = crVSplit
       MinSize = 20.000000000000000000
       Opacity = 0.000000000000000000
-      Position.Y = 324.000000000000000000
+      Position.Y = 284.000000000000000000
       Size.Width = 382.000000000000000000
       Size.Height = 4.000000000000000000
       Size.PlatformDefault = False
