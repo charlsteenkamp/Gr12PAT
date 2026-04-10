@@ -11,6 +11,15 @@ uses
   FMX.NumberBox, FMX.ExtCtrls;
 
 type
+  PDirectoryNavNode = ^TDirectoryNavNode;
+
+  TDirectoryNavNode = record
+    Directory: String;
+
+    PPrev: PDirectoryNavNode;
+    PNext: PDirectoryNavNode;
+  end;
+
   TContentBrowserPanelFrame = class(TDesignPanelFrame)
     sbAssetTiles: TVertScrollBox;
     pnlAssetTiles: TPanel;
@@ -28,12 +37,14 @@ type
     procedure sbAssetTilesResize(Sender: TObject);
     procedure btnParentDirectoryClick(Sender: TObject);
     procedure edtDirectoryChange(Sender: TObject);
+    procedure btnBackClick(Sender: TObject);
+    procedure btnForwardClick(Sender: TObject);
 
   public
     constructor Create(AOwner: TComponent; AAssetsDirectory: String);
 
   private
-    procedure ParseDirectory(ADirectory: String);
+    procedure ParseDirectory(ADirectory: String; AFreeNextChain: Boolean = True);
     procedure AlignAssetTiles();
 
     procedure OnAssetTileDoubleClick(Sender: TContentBrowserAssetTileFrame);
@@ -44,6 +55,8 @@ type
 
     FAssetTiles: TArray<TContentBrowserAssetTileFrame>;
     FScale, FSpacing: Single;
+
+    FDirNavHead, FCurrDirNavNode: PDirectoryNavNode;
   end;
 
 implementation
@@ -56,18 +69,24 @@ constructor TContentBrowserPanelFrame.Create(AOwner: TComponent; AAssetsDirector
 begin
   inherited Create(AOwner, 200);
 
+  FScale := 1.0;
+  FSpacing := 5.0;
   FAssetsDirectory := AAssetsDirectory;
 
   if TDirectory.IsRelativePath(FAssetsDirectory) then
     FAssetsDirectory := System.IOUtils.TPath.Combine(TDirectory.GetCurrentDirectory(), FAssetsDirectory);
 
-  ParseDirectory(FAssetsDirectory);
+  New(FDirNavHead);
+  New(FCurrDirNavNode);
+  FDirNavHead^.Directory := FAssetsDirectory;
+  FDirNavHead^.PPrev := nil;
+  FDirNavHead^.PNext := nil;
+  FCurrDirNavNode := FDirNavHead;
 
-  FScale := 1.0;
-  FSpacing := 5.0;
+  ParseDirectory(FAssetsDirectory);
 end;
 
-procedure TContentBrowserPanelFrame.ParseDirectory(ADirectory: String);
+procedure TContentBrowserPanelFrame.ParseDirectory(ADirectory: String; AFreeNextChain: Boolean);
 begin
   for var i := 0 to High(FAssetTiles) do
   begin
@@ -79,6 +98,27 @@ begin
 
   FCurrentDirectory := ADirectory;
   edtDirectory.Text := FCurrentDirectory;
+
+  if AFreeNextChain and (FCurrentDirectory <> FCurrDirNavNode^.Directory) then
+  begin
+    var NodeIter := FCurrDirNavNode.PNext;
+
+    while NodeIter <> nil do
+    begin
+     var PNext := NodeIter.PNext;
+      Dispose(NodeIter);
+      NodeIter := PNext;
+    end;
+
+    New(FCurrDirNavNode.PNext);
+    FCurrDirNavNode^.PNext^.Directory := FCurrentDirectory;
+    FCurrDirNavNode^.PNext^.PPrev := FCurrDirNavNode;
+    FCurrDirNavNode^.PNext^.PNext := nil;
+    FCurrDirNavNode := FCurrDirNavNode^.PNext;
+  end;
+
+  btnBack.Enabled := FCurrDirNavNode^.PPrev <> nil;
+  btnForward.Enabled := FCurrDirNavNode^.PNext <> nil;
 
   var Directories := TDirectory.GetDirectories(FCurrentDirectory);
   var Files := TDirectory.GetFiles(FCurrentDirectory);
@@ -147,6 +187,24 @@ procedure TContentBrowserPanelFrame.sbAssetTilesResize(Sender: TObject);
 begin
   inherited;
 
+  AlignAssetTiles();
+end;
+
+procedure TContentBrowserPanelFrame.btnBackClick(Sender: TObject);
+begin
+  inherited;
+
+  FCurrDirNavNode := FCurrDirNavNode^.PPrev;
+  ParseDirectory(FCurrDirNavNode^.Directory, False);
+  AlignAssetTiles();
+end;
+
+procedure TContentBrowserPanelFrame.btnForwardClick(Sender: TObject);
+begin
+  inherited;
+
+  FCurrDirNavNode := FCurrDirNavNode^.PNext;
+  ParseDirectory(FCurrDirNavNode^.Directory, False);
   AlignAssetTiles();
 end;
 

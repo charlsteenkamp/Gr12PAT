@@ -301,6 +301,7 @@ inherited ContentBrowserPanelFrame: TContentBrowserPanelFrame
         end
         object btnForward: TSpeedButton
           Align = Left
+          Enabled = False
           Margins.Top = 2.500000000000000000
           Margins.Right = 5.000000000000000000
           Margins.Bottom = 2.500000000000000000
@@ -310,6 +311,7 @@ inherited ContentBrowserPanelFrame: TContentBrowserPanelFrame
           Size.Height = 20.000000000000000000
           Size.PlatformDefault = False
           TextSettings.Trimming = None
+          OnClick = btnForwardClick
           object imgForward: TImage
             MultiResBitmap = <
               item
@@ -489,6 +491,7 @@ inherited ContentBrowserPanelFrame: TContentBrowserPanelFrame
         end
         object btnBack: TSpeedButton
           Align = Left
+          Enabled = False
           Margins.Top = 2.500000000000000000
           Margins.Right = 5.000000000000000000
           Margins.Bottom = 2.500000000000000000
@@ -498,6 +501,7 @@ inherited ContentBrowserPanelFrame: TContentBrowserPanelFrame
           Size.Height = 20.000000000000000000
           Size.PlatformDefault = False
           TextSettings.Trimming = None
+          OnClick = btnBackClick
           object imgBack: TImage
             MultiResBitmap = <
               item
